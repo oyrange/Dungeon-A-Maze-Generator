@@ -278,7 +278,7 @@ public class World {
 
             if (!overlap) {
                 rooms.add(r);
-                for (Position floor : r.floor()) {
+                for (Position floor : r.bounds()) {
                     setTile(floor, FLOOR);
                 }
                 for (Position upper : r.topWalls()) {
@@ -321,7 +321,7 @@ public class World {
     private void drawRooms(List<Room> rooms) {
         for (Room room : rooms) {
 
-            for (Position floor : room.floor()) {
+            for (Position floor : room.bounds()) {
                 //if (!ROOMTiles.contains(currentTile(floor))) {
                     setTile(floor, FLOOR);
                 //}
@@ -471,7 +471,7 @@ public class World {
         }
 
         for (Room hallway : hallways) {
-            for (Position floor : hallway.floor()) {
+            for (Position floor : hallway.bounds()) {
                 //if (!ROOMTiles.contains(currentTile(floor))) {
                     setTile(floor, FLOOR);
                 //}
@@ -594,7 +594,7 @@ public class World {
 
     private Position getRandomFloor(Random random, List<Room> rooms) {
         Room randomRoom = rooms.get(random.nextInt(rooms.size()));
-        List<Position> floor = randomRoom.floor();
+        List<Position> floor = randomRoom.bounds();
         Position randomFloor = floor.get(random.nextInt(floor.size()));
         return randomFloor;
     }

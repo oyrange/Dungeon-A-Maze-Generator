@@ -26,18 +26,14 @@ public class Room {
         //TETile[] walls = new TETile[][] {RIGHT_WALLS, LEFT_WALLS, TOP_WALLS, BOTTOM_WALLS};
 
         setBounds();
-        //setWalls();
-        setFloor();
+        setWalls();
     }
 
     /////
-    private void setBounds() {
+    private void setWalls() {
         for (int x = P.getX(); x <= P.getX() + WIDTH; x++) {
             Position up = new Position(x, P.getY() + HEIGHT);
             Position low = new Position(x, P.getY());
-
-            BOUNDS.add(up);
-            BOUNDS.add(low);
 
             TOP_WALLS.add(up);
             BOTTOM_WALLS.add(low);
@@ -47,12 +43,13 @@ public class Room {
             Position right = new Position(P.getX() + WIDTH, y);
             Position left = new Position(P.getX(), y);
 
-            BOUNDS.add(right);
-            BOUNDS.add(left);
-
             RIGHT_WALLS.add(right);
             LEFT_WALLS.add(left);
         }
+        ALL_WALLS.addAll(TOP_WALLS);
+        ALL_WALLS.addAll(BOTTOM_WALLS);
+        ALL_WALLS.addAll(RIGHT_WALLS);
+        ALL_WALLS.addAll(LEFT_WALLS);
 
         CORNER_WALLS.add(new Position(P.getX(), P.getY()));
         CORNER_WALLS.add(new Position(P.getX(), P.getY() + HEIGHT));
@@ -60,55 +57,22 @@ public class Room {
         CORNER_WALLS.add(new Position(P.getX() + WIDTH, P.getY() + HEIGHT));
     }
 
-    private void setFloor() {
-        for (int x = P.getX(); x < P.getX() + WIDTH; x++) {
-            for (int y = P.getY(); y < P.getY() + HEIGHT; y++) {
-                FLOOR.add(new Position(x, y));
+    private void setBounds() {
+        for (int x = P.getX(); x <= P.getX() + WIDTH; x++) {
+            for (int y = P.getY(); y <= P.getY() + HEIGHT; y++) {
+                BOUNDS.add(new Position(x, y));
             }
         }
     }
 
-    private void setWalls() {
 
-        CORNER_WALLS.add(new Position(P.getX() - 1, P.getY() - 1));
-        CORNER_WALLS.add(new Position(P.getX() - 1, P.getY() + HEIGHT));
-        CORNER_WALLS.add(new Position(P.getX() + WIDTH, P.getY() - 1));
-        CORNER_WALLS.add(new Position(P.getX() + WIDTH, P.getY() + HEIGHT));
-
-        for (int x = P.getX(); x < P.getX() + WIDTH ; x++) {
-            Position up = new Position(x, P.getY() + HEIGHT);
-            Position low = new Position(x, P.getY() - 1);
-
-            TOP_WALLS.add(up);
-            BOTTOM_WALLS.add(low);
-        }
-
-
-        for (int y = P.getY(); y < P.getY() + HEIGHT; y++) {
-            Position right = new Position(P.getX() + WIDTH, y);
-            Position left = new Position(P.getX() - 1, y);
-
-            RIGHT_WALLS.add(right);
-            LEFT_WALLS.add(left);
-        }
-
-        ALL_WALLS.addAll(CORNER_WALLS);
-        ALL_WALLS.addAll(TOP_WALLS);
-        ALL_WALLS.addAll(BOTTOM_WALLS);
-        ALL_WALLS.addAll(RIGHT_WALLS);
-        ALL_WALLS.addAll(LEFT_WALLS);
-    }
-
-    public List<Position> allWalls() {
-        return ALL_WALLS;
-    }
-
-    public List<Position> floor() {
-        return FLOOR;
-    }
 
     public List<Position> bounds() {
         return BOUNDS;
+    }
+
+    public List<Position> walls() {
+        return ALL_WALLS;
     }
 
     public List<Position> cornerWalls() {
@@ -141,5 +105,10 @@ public class Room {
 
     public int height() {
         return HEIGHT;
+    }
+
+    public boolean containsPosition(Position position) {
+        if (BOUNDS.contains(position)) return true;
+        return false;
     }
 }

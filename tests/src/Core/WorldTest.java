@@ -1,9 +1,11 @@
 package src.Core;
 
 import Core.Position;
+import Core.Room;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class WorldTest {
 
@@ -24,5 +26,12 @@ public class WorldTest {
         Position anotherPosition = new Position(1, 1);
 
         assertEquals(position, anotherPosition);
+    }
+
+    @Test
+    public void roomShouldContainStartingPosition() {
+        Position position = new Position(1,1);
+        Room room = new Room(position, 5, 5);
+        assertTrue(room.containsPosition(position));
     }
 }

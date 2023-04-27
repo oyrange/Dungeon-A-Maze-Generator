@@ -11,6 +11,17 @@ import static java.lang.Math.floorDiv;
  */
 
 public class W {
+
+    private static final int EDGE = 1;
+
+    /** ROOM rules */
+    private final int attempts = 100;
+    private final int width_min = 4;
+    private final int width_max = 9;
+    private final int height_min = 4;
+    private final int height_max = 9;
+
+
     /** Debug tiles. */
     public static final List<TETile> debugROOMTiles = new ArrayList<>();
     public static final List<TETile> debugPATHTiles = new ArrayList<>();
@@ -25,7 +36,7 @@ public class W {
     private final int WIDTH;
     private final int HEIGHT;
     private final TETile[][] MAP;
-    private final int MARGIN = 4;   // border between canvas and room generation
+    private static final int MARGIN = 4;   // border between canvas and room generation
 
     /** Seed variables. */
     private int marginWIDTH;
@@ -87,8 +98,8 @@ public class W {
     }
 
     private void buildFromSeed(long seed) {
-        marginWIDTH = WIDTH - MARGIN - 1;
-        marginHEIGHT = HEIGHT - MARGIN - 1;
+        marginWIDTH = WIDTH - MARGIN - EDGE;
+        marginHEIGHT = HEIGHT - MARGIN - EDGE;
         RANDOM = new Random(seed);
         EMPTY = new MazeGraph(RANDOM, MARGIN, marginWIDTH, marginHEIGHT, WIDTH, HEIGHT);   // TODO: check for remnant crossovers btw W and MazeGraph, tidy code
         //WQU = new WeightedQuickUnionUF(WIDTH * HEIGHT);
@@ -139,12 +150,7 @@ public class W {
      *       Can take too long to generate all floor bounds then
      *       discard and try again, attempts x. */
     private void generateRooms() {
-        int width_min = 4;
-        int width_max = 9;
-        int height_min = 4;
-        int height_max = 9;
 
-        int attempts = 100;
         // could also set limit on successfully created rooms
 
         for (int i = 0; i < attempts; i++) {
@@ -153,9 +159,9 @@ public class W {
             Position pos = randomPosition(MARGIN, marginWIDTH, MARGIN, marginHEIGHT);
             int width = RANDOM.nextInt(width_min, width_max);
             int height = RANDOM.nextInt(height_min, height_max);
-            Room r = new Room(pos, width, height);
+            Room room = new Room(pos, width, height);
 
-            for (Position bound : r.bounds()) {             // how to condense init room and check bounds?
+            for (Position bound : room.bounds()) {             // how to condense init room and check bounds?
                 if (bound.getX() < 0 || bound.getX() >= marginWIDTH ||
                         bound.getY() < 0 || bound.getY() >= marginHEIGHT ||
                         (debugROOMTiles.contains(currentTile(bound)))) {
@@ -165,16 +171,16 @@ public class W {
             }
 
             if (!overlap) {
-                ROOMS.add(r);
+                ROOMS.add(room);
                 //ROOM_BOUNDS.addAll(r.bounds());             // can I delete ROOM_BOUNDS?
-                for (Position floor : r.floor()) {
+                for (Position floor : room.bounds()) {
                     //ROOMS.add(floor);
                     setTile(floor, roomFLOOR);
                 }
-                for (Position bound : r.bounds()) {
+                for (Position bound : room.walls()) {
                     setTile(bound, roomWALL);
                 }
-                for (Position corner : r.cornerWalls()) {
+                for (Position corner : room.cornerWalls()) {
                     setTile(corner, roomCORNER);
                 }
             }
