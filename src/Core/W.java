@@ -22,8 +22,8 @@ public class W {
     public static final TETile BLANK_WALL = Tileset.WALL;
 
     /** Constructor variables. */
-    private int WIDTH;
-    private int HEIGHT;
+    private final int WIDTH;
+    private final int HEIGHT;
     private final TETile[][] MAP;
     private final int MARGIN = 4;   // border between canvas and room generation
 

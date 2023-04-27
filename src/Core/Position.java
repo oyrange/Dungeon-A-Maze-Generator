@@ -16,4 +16,16 @@ public class Position {
     public int getY() {
         return y;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        //return super.equals(other);
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof Position otherPosition)) {
+            return false;
+        }
+        return otherPosition.x == x && otherPosition.y == y;
+    }
 }
