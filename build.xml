@@ -16,12 +16,12 @@
 
     <target name="compile">
         <mkdir dir="${main.build.dir}"/>
+        <javac srcdir="${main.src.dir}" destdir="${main.build.dir}" includeantruntime="false"/>
 
         <pathelement location="lib/algs4.jar"/>
         <pathelement location="lib/stdlib.jar"/>
 
-        <javac srcdir="${main.src.dir}" destdir="${main.build.dir}" includeantruntime="false"/>
-     </target>
+    </target>
 
     <target name="test-compile" depends="compile">
         <mkdir dir="${test.build.dir}"/>
