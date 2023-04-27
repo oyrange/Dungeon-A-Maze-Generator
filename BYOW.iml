@@ -11,5 +11,6 @@
     <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="library" name="algs4" level="project" />
     <orderEntry type="library" name="stdlib-package" level="project" />
+    <orderEntry type="library" name="library-fa22" level="project" />
   </component>
 </module>
