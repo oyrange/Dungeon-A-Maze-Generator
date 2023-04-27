@@ -1,7 +1,7 @@
-package byow.Core;
+package Core;
 
-import byow.TileEngine.TERenderer;
-import byow.TileEngine.TETile;
+import TileEngine.TERenderer;
+import TileEngine.TETile;
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Out;

@@ -1,4 +1,4 @@
-package byow.Core;
+package Core;
 
 public interface InputSource {
     char getNextKey();

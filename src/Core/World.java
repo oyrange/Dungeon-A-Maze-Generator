@@ -1,9 +1,9 @@
-package byow.Core;
+package Core;
 
-import byow.TileEngine.TETile;
-import byow.TileEngine.Tileset;
-import byow.TileEngine.debugTile;
-import byow.TileEngine.dungeonTile;
+import TileEngine.TETile;
+import TileEngine.TETile;
+import TileEngine.Tileset;
+import TileEngine.dungeonTile;
 
 import java.util.*;
 

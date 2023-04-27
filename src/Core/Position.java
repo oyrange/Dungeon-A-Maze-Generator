@@ -1,6 +1,4 @@
-package byow.Core;
-
-import byow.TileEngine.TETile;
+package Core;
 
 public class Position {
     private int x;

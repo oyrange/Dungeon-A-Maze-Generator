@@ -1,4 +1,4 @@
-package byow.TileEngine;
+package TileEngine;
 
 import edu.princeton.cs.algs4.StdDraw;
 

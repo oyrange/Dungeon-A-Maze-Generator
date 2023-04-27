@@ -1,4 +1,4 @@
-package byow.Core;
+package src.Core;
 
 import org.junit.Test;
 

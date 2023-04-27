@@ -1,6 +1,6 @@
-package byow.Core;
+package Core;
 
-import byow.TileEngine.*;
+import TileEngine.*;
 import java.util.*;
 
 import static java.lang.Math.floorDiv;

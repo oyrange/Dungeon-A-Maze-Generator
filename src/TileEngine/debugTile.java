@@ -1,4 +1,4 @@
-package byow.TileEngine;
+package TileEngine;
 
 import java.awt.*;
 

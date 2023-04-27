@@ -1,4 +1,4 @@
-package byow.Core;
+package Core;
 
 public class StringInputDevice implements InputSource{
     private String input;

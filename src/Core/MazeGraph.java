@@ -1,9 +1,4 @@
-package byow.Core;
-
-import byow.TileEngine.TETile;
-import byow.TileEngine.debugTile;
-import edu.princeton.cs.algs4.In;
-import edu.princeton.cs.algs4.StdRandom;
+package Core;
 
 import java.util.*;
 
