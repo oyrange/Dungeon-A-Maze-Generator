@@ -16,6 +16,10 @@
 
     <target name="compile">
         <mkdir dir="${main.build.dir}"/>
+
+        <pathelement location="lib/algs4.jar"/>
+        <pathelement location="lib/stdlib.jar"/>
+
         <javac srcdir="${main.src.dir}" destdir="${main.build.dir}" includeantruntime="false"/>
      </target>
 
