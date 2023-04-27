@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="stdlib-package">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../../UCB_Fall_22/61B/library-fa22/stdlib-package.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../UCB_Fall_22/61B/library-fa22/stdlib.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../../UCB_Fall_22/61B/library-fa22/stdlib-package.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../UCB_Fall_22/61B/library-fa22/stdlib.jar!/" />
+    </SOURCES>
+  </library>
+</component>
