@@ -23,7 +23,7 @@
     </target>
 
     <path id="build-classpath">
-        <fileset dir="${libs.dir}">
+        <fileset dir="$lib.dir">
             <include name="algs4.jar"/>
             <include name="stdlib.jar"/>
         </fileset>
