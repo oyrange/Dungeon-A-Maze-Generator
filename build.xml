@@ -8,18 +8,26 @@
         <pathelement location="lib/junit-4.13.2.jar"/>
         <pathelement location="lib/hamcrest-core-1.3.jar"/>
 
-        <pathelement location="lib/algs4.jar"/>
-        <pathelement location="lib/stdlib.jar"/>
-
         <pathelement location="${main.build.dir}"/>
     </path>
 
     <target name="compile">
         <mkdir dir="${main.build.dir}"/>
-        <javac srcdir="${main.src.dir}" destdir="${main.build.dir}" includeantruntime="false"/>
+        <javac srcdir="${main.src.dir}"
+               destdir="${main.build.dir}"
 
-        <pathelement location="lib/algs4.jar"/>
-        <pathelement location="lib/stdlib.jar"/>
+               classpathref="build-classpath"
+
+               includeantruntime="false"
+        />
+
+        <path id="build-classpath">
+            <fileset dir="${libs.dir}">
+                <include name="algs4.jar"/>
+                <include name="stdlib.jar"/>
+            </fileset>
+            <pathelement path= "${build.dir}"/>
+        </path>
 
     </target>
 
