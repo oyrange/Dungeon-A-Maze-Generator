@@ -1,5 +1,8 @@
 package Core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Position {
     private int x;
     private int y;
@@ -15,6 +18,16 @@ public class Position {
 
     public int getY() {
         return y;
+    }
+
+    public List<Position> adjacentPositions(Position startingPosition, int width, int height) {
+        List<Position> positions = new ArrayList<>();
+        for (int x = startingPosition.x; x <= startingPosition.x + width; x++) {
+            for (int y = startingPosition.y; y <= startingPosition.y + height; y++) {
+                positions.add(new Position(x, y));
+            }
+        }
+        return positions;
     }
 
     @Override

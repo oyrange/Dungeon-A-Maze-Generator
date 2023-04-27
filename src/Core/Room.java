@@ -1,5 +1,6 @@
 package Core;
 
+import java.util.Random;
 import java.util.*;
 
 public class Room {
@@ -58,13 +59,8 @@ public class Room {
     }
 
     private void setBounds() {
-        for (int x = P.getX(); x <= P.getX() + WIDTH; x++) {
-            for (int y = P.getY(); y <= P.getY() + HEIGHT; y++) {
-                BOUNDS.add(new Position(x, y));
-            }
-        }
+        BOUNDS.addAll(P.adjacentPositions(P, WIDTH, HEIGHT));
     }
-
 
 
     public List<Position> bounds() {
@@ -110,5 +106,10 @@ public class Room {
     public boolean containsPosition(Position position) {
         if (BOUNDS.contains(position)) return true;
         return false;
+    }
+
+    public Position randomPosition() {
+        Random random = new Random();
+        return BOUNDS.get(random.nextInt(BOUNDS.size()));
     }
 }
