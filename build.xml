@@ -20,16 +20,16 @@
 
                includeantruntime="false"
         />
-
-        <path id="build-classpath">
-            <fileset dir="${libs.dir}">
-                <include name="algs4.jar"/>
-                <include name="stdlib.jar"/>
-            </fileset>
-            <pathelement path= "${build.dir}"/>
-        </path>
-
     </target>
+
+    <path id="build-classpath">
+        <fileset dir="${libs.dir}">
+            <include name="algs4.jar"/>
+            <include name="stdlib.jar"/>
+        </fileset>
+        <pathelement path= "${build.dir}"/>
+    </path>
+
 
     <target name="test-compile" depends="compile">
         <mkdir dir="${test.build.dir}"/>
