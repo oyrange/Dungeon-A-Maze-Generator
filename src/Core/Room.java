@@ -59,7 +59,7 @@ public class Room {
     }
 
     private void setBounds() {
-        BOUNDS.addAll(P.adjacentPositions(P, WIDTH, HEIGHT));
+        BOUNDS.addAll(P.twoDimensionalPositions(WIDTH, HEIGHT));
     }
 
 
@@ -111,5 +111,14 @@ public class Room {
     public Position randomPosition() {
         Random random = new Random();
         return BOUNDS.get(random.nextInt(BOUNDS.size()));
+    }
+
+    public boolean overlap(Room room2) {
+        for (Position bound : room2.bounds()) {
+            if (BOUNDS.contains(bound)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -54,4 +54,14 @@ public class WorldTest {
         Position room1Position = room1.randomPosition();
         assertFalse(room2.containsPosition(room1Position));
     }
+
+    @Test
+    public void roomShouldKnowIfItOverlapsWithAnotherRoom() {
+        Position position = new Position(1,1);
+
+        Room room1 = new Room(position, 5, 5);
+        Room room2 = new Room(position, 2, 2);
+
+        assertTrue(room1.overlap(room2));
+    }
 }

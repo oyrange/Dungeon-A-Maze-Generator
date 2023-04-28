@@ -106,10 +106,9 @@ public class W {
 
         fillWorld();
         generateRooms();
-        generatePaths();
-        openConnectors();
-        //removeDeadEnds();
-        removeDeadEnds();removeDeadEnds();removeDeadEnds();
+        //generatePaths();
+        //openConnectors();
+        //removeDeadEnds();removeDeadEnds();removeDeadEnds();
 
         //System.out.println(EMPTY.getVertexCount());
         //System.out.println(EMPTY.getEdgesCount());
@@ -131,9 +130,7 @@ public class W {
     private void fillWorld() {
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
-                //if (MAP[x][y] != FLOOR) {
                 MAP[x][y] = BASETILE;
-                //}
             }
         }
     }
@@ -153,6 +150,8 @@ public class W {
 
         // could also set limit on successfully created rooms
 
+        List<Position> bounds = calculateBounds();
+
         for (int i = 0; i < attempts; i++) {
             boolean overlap = false;
 
@@ -160,6 +159,13 @@ public class W {
             int width = RANDOM.nextInt(width_min, width_max);
             int height = RANDOM.nextInt(height_min, height_max);
             Room room = new Room(pos, width, height);
+
+//            for (Position bound : bounds) {
+//                if (room.containsPosition(bound) || !currentTile(bound).equals(BASETILE)) {
+//                    overlap = true;
+//                    break;
+//                }
+//            }
 
             for (Position bound : room.bounds()) {             // how to condense init room and check bounds?
                 if (bound.getX() < 0 || bound.getX() >= marginWIDTH ||
@@ -185,6 +191,25 @@ public class W {
                 }
             }
         }
+    }
+
+    private List<Position> calculateBounds() {
+        List<Position> bounds = new ArrayList<>();
+        for (int x = MARGIN; x < marginWIDTH; x++) {
+            Position upper = new Position(x, marginHEIGHT);
+            Position lower = new Position(x, MARGIN);
+
+            bounds.add(upper);
+            bounds.add(lower);
+        }
+        for (int y = MARGIN; y < marginHEIGHT; y++) {
+            Position right = new Position(marginWIDTH, y);
+            Position left = new Position(MARGIN, y);
+
+            bounds.add(right);
+            bounds.add(left);
+        }
+        return bounds;
     }
 
     /**
@@ -324,94 +349,8 @@ public class W {
             }
         }
 
-        //WeightedQuickUnionUF wqu = new WeightedQuickUnionUF(marginWIDTH * marginHEIGHT);
-        //wqu.union(0, 40);
-        //System.out.println(wqu.find(20));
-
         return connectors;
 
-        /*
-        wqu impl.
-        openconnectors()
-            WeightedQuickUnionUF wqu = new WeightedQuickUnionUF(FLOORS.size());
-            int mainRegion = assign1D(randomPosition(ROOMS.get(0)));
-            int i = 1;
-
-            for (int floor : assign1D(mainRegion.floor())) {
-                wqu.union(location, floor);
-            }
-
-            while (wqu.count() > 0) {
-                Room rm = ROOMS.get(i);
-                int location = assign1D(new Position(rm.width() / 2, rm.height() / 2));
-                if (!wqu.find(location).equals(location)) {
-                    for (int floor : assign1D(mainRegion.floor())) {
-                        wqu.union(location, floor);
-                    }
-                }
-
-                i++;
-            }
-
-
-
-
-            for (int floor : assign1D(mainRegion.floor())) {
-                wqu.union(location, floor);
-            }
-            List<Position> connectors = findConnectors(mainRegion);
-            connectors( random int );
-
-
-
-
-        openconnectors():
-            list connectors = findconnectors();
-            Room room = ROOMS.(get random)
-
-            while (!connectors.isEmpty())
-                wqu.add(room.floor())
-                Position randomConnector = (random room connector)
-                connectors.remove(randomConnector)
-                wqu.add(randomConnector)
-
-                for (path tile attached to randomConnector)
-                    wqu.add(path tile);
-
-
-        findconnectors():
-            for each room:
-                find all connectors to room
-            add all connectors to list
-
-            // connector = non corner OR room adjacent
-
-
-        add all connectors to list
-
-        pick random room
-        add to WQU
-
-        pick connector to room
-        remove from connectors list
-        add to WQU
-        add path to connector to WQU
-        remove connectors to room from that list
-
-         */
-
-        /*
-        highlight all connectors
-            - rock
-            - borders two rooms
-        main room = new wqu
-
-        while hasConnectors()
-            pick random connector to main room
-            open connector
-            add to wqu
-            discard other connectors to that room
-         */
     }
 
     private void removeDeadEnds() {

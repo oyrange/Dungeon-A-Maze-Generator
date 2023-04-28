@@ -20,10 +20,10 @@ public class Position {
         return y;
     }
 
-    public List<Position> adjacentPositions(Position startingPosition, int width, int height) {
+    public List<Position> twoDimensionalPositions(int width, int height) {
         List<Position> positions = new ArrayList<>();
-        for (int x = startingPosition.x; x <= startingPosition.x + width; x++) {
-            for (int y = startingPosition.y; y <= startingPosition.y + height; y++) {
+        for (int x = this.x; x <= this.x + width; x++) {
+            for (int y = this.y; y <= this.y + height; y++) {
                 positions.add(new Position(x, y));
             }
         }
