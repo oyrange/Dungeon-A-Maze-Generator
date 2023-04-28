@@ -228,16 +228,16 @@ public class W {
 //            x = (tile.getX() < next.getX()) ? x+1: x-1;
 //            y = (tile.getY() < next.getY()) ? y+1 : y-1;
 
-            Position btw = new Position(x, y);
+            Position between = new Position(x, y);
 
             if (!debugROOMTiles.contains(currentTile(tile))) {
                 setTile(tile, pathFLOOR);
             }                                                   // TODO: these if conditions removeable when maze gen around rooms
-            if (!debugROOMTiles.contains(currentTile(btw))) {
-                setTile(btw, pathFLOOR);
+            if (!debugROOMTiles.contains(currentTile(between))) {
+                setTile(between, pathFLOOR);
             }
             PATHS.add(tile);
-            PATHS.add(btw);
+            PATHS.add(between);
 
             /* TODO: walls curr overwrite floor tiles due to loop */
 

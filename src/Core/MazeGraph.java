@@ -209,7 +209,7 @@ public class MazeGraph {
 /* DFS basic implementation. */
 
     public void helpTraverse(Integer pos, List<Position> path, List<Integer> marked, List<Integer> unvisited) {
-        marked.add(pos);            // TODO: optional, concat these lines into one
+        marked.add(pos);            // TODO: optional, concat these lines
         unvisited.remove(pos);
         path.add(assign2D(pos));
 
