@@ -103,11 +103,6 @@ public class W {
         generatePaths();
         //openConnectors();
         //removeDeadEnds();removeDeadEnds();removeDeadEnds();
-
-        //System.out.println(EMPTY.getVertexCount());
-        //System.out.println(EMPTY.getEdgesCount());
-        //System.out.println(EMPTY.Stringify());
-
         /*
 
         removeDeadEnds()
@@ -189,19 +184,18 @@ public class W {
         addEdges();
 
         // use for debugging without generateRooms() on:
-//        Position start = MAP_ROOM.randomPosition();
-//        while (debugROOMTiles.contains(currentTile(start)) ||
-//                !(start.xCoordinateIsEven() && start.yCoordinateIsEven())) {
-//            start = MAP_ROOM.randomPosition();
-//        }
-
-        Position start = ROOMS.get(RANDOM.nextInt(ROOMS.size())).randomPosition();
-        while (!(start.xCoordinateIsEven() && start.yCoordinateIsEven())){
+        Position start = MAP_ROOM.randomPosition();
+        while (debugROOMTiles.contains(currentTile(start)) ||
+                !(start.xCoordinateIsEven() && start.yCoordinateIsEven())) {
             start = MAP_ROOM.randomPosition();
         }
 
-        List<Position> path = EMPTY.traverse(start);
+//        Position start = ROOMS.get(RANDOM.nextInt(ROOMS.size())).randomPosition();
+//        while (!(start.xCoordinateIsEven() && start.yCoordinateIsEven())){
+//            start = MAP_ROOM.randomPosition();
+//        }
 
+        List<Position> path = EMPTY.traverse(start);
         for (int i = 0; i < path.size() - 1; i++) {
             Position tile = path.get(i);
             Position next = path.get(i + 1);
@@ -294,10 +288,10 @@ public class W {
                     }
                 }
 
-                Position vert1 = adjacentPos(true, bound, 1).get(0);
-                Position vert2 = adjacentPos(true, bound, 1).get(1);
-                Position horiz1 = adjacentPos(false, bound, 1).get(0);
-                Position horiz2 = adjacentPos(false, bound, 1).get(1);
+                Position vert1 = bound.adjacentVerticalPositions(1).get(0);
+                Position vert2 = bound.adjacentVerticalPositions(1).get(1);
+                Position horiz1 = bound.adjacentHorizontalPositions(1).get(0);
+                Position horiz2 = bound.adjacentHorizontalPositions(1).get(1);
 
                 // if touching another room
                 if ((currentTile(vert1).equals(roomFLOOR) && currentTile(vert2).equals(roomWALL) ||
@@ -354,54 +348,13 @@ public class W {
         List<TETile> adjacent = new ArrayList<>();
         //int i = 0;
 
-        for (Position p : adjacentPos(true, pos, distance)) {
+        for (Position p : pos.adjacentVerticalPositions(distance)) {
             adjacent.add(currentTile(p));
         }
-        for (Position p : adjacentPos(false, pos, distance)) {
+        for (Position p : pos.adjacentHorizontalPositions(distance)) {
             adjacent.add(currentTile(p));
         }
-
-        /*
-        TETile up = MAP[pos.getX()][pos.getY() + 1];
-        TETile low = MAP[pos.getX()][pos.getY() - 1];
-        TETile right = MAP[pos.getX() + 1][pos.getY()];
-        TETile left = MAP[pos.getX() - 1][pos.getY()];
-
-        adjacent.add(up);
-        adjacent.add(low);
-        adjacent.add(right);
-        adjacent.add(left);
-
-        /*
-        for (TETile tile : adjacent) {
-            if (tile == roomWALL) {
-                i++;
-            }
-        }
-        */
-
         return adjacent;
-    }
-
-    private List<Position> adjacentPos(boolean vertical, Position pos, int distance) {
-        List<Position> positions = new ArrayList<>();
-
-        if (!vertical) {
-            Position upper = new Position(pos.getX(), pos.getY() + distance);
-            Position lower = new Position(pos.getX(), pos.getY() - distance);
-
-            positions.add(upper);
-            positions.add(lower);
-
-        } else {
-            Position left = new Position(pos.getX() + distance, pos.getY());
-            Position right = new Position(pos.getX() - distance, pos.getY());
-
-            positions.add(left);
-            positions.add(right);
-        }
-
-        return positions;
     }
 
     /**

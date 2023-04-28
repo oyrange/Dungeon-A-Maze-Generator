@@ -1,17 +1,16 @@
 package src.Core;
 
+import Core.MazeGraph;
 import Core.Position;
 import Core.Room;
 import org.junit.Test;
 
+import java.util.List;
+import java.util.Random;
+
 import static org.junit.Assert.*;
 
 public class WorldTest {
-
-    @Test
-    public void oneShouldEqualOne() {
-        assertEquals(1, 1);
-    }
 
     @Test
     public void aPositionShouldBeEqualToItself() {
@@ -128,5 +127,31 @@ public class WorldTest {
         Position randomPosition = room.randomPosition();
 
         assertTrue(room.containsPosition(randomPosition));
+    }
+
+    @Test
+    public void positionShouldKnowAdjacentHorizontalPositions() {
+        Position leftPosition = new Position(0, 1);
+        Position centrePosition = new Position(1, 1);
+        Position rightPosition = new Position(2, 1);
+
+        List<Position> adjacentPositionsList = centrePosition.adjacentHorizontalPositions(1);
+
+        assertTrue(adjacentPositionsList.size() == 2);
+        assertTrue(adjacentPositionsList.contains(leftPosition));
+        assertTrue(adjacentPositionsList.contains(rightPosition));
+    }
+
+    @Test
+    public void positionShouldKnowAdjacentVerticalPositions() {
+        Position leftPosition = new Position(1, 0);
+        Position centrePosition = new Position(1, 1);
+        Position rightPosition = new Position(1, 2);
+
+        List<Position> adjacentPositionsList = centrePosition.adjacentVerticalPositions(1);
+
+        assertTrue(adjacentPositionsList.size() == 2);
+        assertTrue(adjacentPositionsList.contains(leftPosition));
+        assertTrue(adjacentPositionsList.contains(rightPosition));
     }
 }

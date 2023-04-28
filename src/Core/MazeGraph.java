@@ -31,7 +31,7 @@ public class MazeGraph {
     /**
      * Adds a new vertex to graph.
      */
-    public void addVertex(Integer pos) {
+    private void addVertex(Integer pos) {
         MAP.put(pos, new LinkedList<>());
 
         VERTICES.add(pos);

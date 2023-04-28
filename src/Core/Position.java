@@ -57,4 +57,28 @@ public class Position {
     public boolean yCoordinateLargerThan(Position otherPosition) {
         return y > otherPosition.y;
     }
+
+    public List<Position> adjacentHorizontalPositions(int distance) {
+        List<Position> positions = new ArrayList<>();
+
+        Position left = new Position(x + distance, y);
+        Position right = new Position(x - distance, y);
+
+        positions.add(left);
+        positions.add(right);
+
+        return positions;
+    }
+
+    public List<Position> adjacentVerticalPositions(int distance) {
+        List<Position> positions = new ArrayList<>();
+
+        Position upper = new Position(x, y + distance);
+        Position lower = new Position(x, y - distance);
+
+        positions.add(upper);
+        positions.add(lower);
+
+        return positions;
+    }
 }
