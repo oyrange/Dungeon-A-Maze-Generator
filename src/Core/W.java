@@ -185,14 +185,16 @@ public class W {
      * Traverse EMPTY MazeGraph to generate random pathways.
      * @var start generates random non-room position.
      */
-    // use for debugging without generateRooms() on:
-//        Position start = MAP_ROOM.randomPosition();
-//        while (debugROOMTiles.contains(currentTile(start)) ||
-//                !(start.getX() % 2 == 0 && start.getY() % 2 == 0)){
-//            start = MAP_ROOM.randomPosition();
-//        }
     private void generatePaths() {
         addEdges();
+
+        // use for debugging without generateRooms() on:
+//        Position start = MAP_ROOM.randomPosition();
+//        while (debugROOMTiles.contains(currentTile(start)) ||
+//                !(start.xCoordinateIsEven() && start.yCoordinateIsEven())) {
+//            start = MAP_ROOM.randomPosition();
+//        }
+
         Position start = ROOMS.get(RANDOM.nextInt(ROOMS.size())).randomPosition();
         while (!(start.xCoordinateIsEven() && start.yCoordinateIsEven())){
             start = MAP_ROOM.randomPosition();
@@ -223,8 +225,9 @@ public class W {
                 vertical = true;
             }
 
-            //int x = (tile.getX() < next.getX()) ? x++: x--;
-            //int y = (tile.getY() < next.getY()) ? y++ : y--;
+//            x = (tile.getX() < next.getX()) ? x+1: x-1;
+//            y = (tile.getY() < next.getY()) ? y+1 : y-1;
+
             Position btw = new Position(x, y);
 
             if (!debugROOMTiles.contains(currentTile(tile))) {

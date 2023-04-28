@@ -120,4 +120,13 @@ public class WorldTest {
 
         assertFalse(smallerPosition.yCoordinateLargerThan(largerPosition));
     }
+
+    @Test
+    public void roomShouldGenerateRandomPositionInsideItself() {
+        Position position = new Position(1,1);
+        Room room = new Room(position, 5,5);
+        Position randomPosition = room.randomPosition();
+
+        assertTrue(room.containsPosition(randomPosition));
+    }
 }
