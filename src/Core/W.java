@@ -21,7 +21,7 @@ public class W {
     public static final TETile roomWALL = debugTile.BLACK; //debugTile.CYAN; //debugTile.DARK_GREY;
     public static final TETile roomCORNER = debugTile.OTHER_BLACK; //debugTile.CYAN;
     public static final TETile pathFLOOR = debugTile.LIGHT_GREY;
-    public static final TETile roomFLOOR = debugTile.WHITE; //debugTile.LIGHT_GREY;
+    public static final TETile roomFLOOR = debugTile.LIGHT_GREY; //debugTile.WHITE;
     public static final TETile pathWALL = debugTile.DARK_GREY;
     public static final TETile BLANK_WALL = Tileset.WALL;
 
@@ -204,6 +204,17 @@ public class W {
             int x = tile.getX();
             int y = tile.getY();
             boolean vertical = false;
+
+//            if (tile.rightPosition().equals(next)) x++;
+//            else if (tile.leftPosition().equals(next)) x--;
+//            else if (tile.upperPosition().equals(next)) {
+//                y++;
+//                vertical = true;
+//            }
+//            else if (tile.lowerPosition().equals(next)) {
+//                y--;
+//                vertical = true;
+//            }
 
             if (tile.getX() < next.getX()) {         // path goes right
                 x++;

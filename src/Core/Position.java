@@ -70,6 +70,8 @@ public class Position {
         return positions;
     }
 
+    // TODO: concat adjacent methods into one ... DRY
+
     public List<Position> adjacentVerticalPositions(int distance) {
         List<Position> positions = new ArrayList<>();
 
@@ -88,5 +90,21 @@ public class Position {
             return true;
         }
         return adjacentHorizontalPositions(1).contains(position2);
+    }
+
+    public Position leftPosition() {
+        return new Position(x - 1, y);
+    }
+
+    public Position rightPosition() {
+        return new Position(x + 1, y);
+    }
+
+    public Position lowerPosition() {
+        return new Position(x, y - 1);
+    }
+
+    public Position upperPosition() {
+        return new Position(x, y + 1);
     }
 }

@@ -144,15 +144,15 @@ public class WorldTest {
 
     @Test
     public void positionShouldKnowAdjacentVerticalPositions() {
-        Position leftPosition = new Position(1, 0);
+        Position lowerPosition = new Position(1, 0);
         Position centrePosition = new Position(1, 1);
-        Position rightPosition = new Position(1, 2);
+        Position upperPosition = new Position(1, 2);
 
         List<Position> adjacentPositionsList = centrePosition.adjacentVerticalPositions(1);
 
         assertTrue(adjacentPositionsList.size() == 2);
-        assertTrue(adjacentPositionsList.contains(leftPosition));
-        assertTrue(adjacentPositionsList.contains(rightPosition));
+        assertTrue(adjacentPositionsList.contains(lowerPosition));
+        assertTrue(adjacentPositionsList.contains(upperPosition));
     }
 
     @Test
@@ -172,5 +172,25 @@ public class WorldTest {
         Position position2 = new Position(2, 1);
 
         assertTrue(position1.adjacentTo(position2));
+    }
+
+    @Test
+    public void positionShouldKnowIfOtherPosIsToLeftOrRight() {
+        Position leftPosition = new Position(0, 1);
+        Position centrePosition = new Position(1, 1);
+        Position rightPosition = new Position(2, 1);
+
+        assertTrue(centrePosition.leftPosition().equals(leftPosition));
+        assertTrue(centrePosition.rightPosition().equals(rightPosition));
+    }
+
+    @Test
+    public void positionShouldKnowIfOtherPosIsUpOrDown() {
+        Position lowerPosition = new Position(1, 0);
+        Position centrePosition = new Position(1, 1);
+        Position upperPosition = new Position(1, 2);
+
+        assertTrue(centrePosition.lowerPosition().equals(lowerPosition));
+        assertTrue(centrePosition.upperPosition().equals(upperPosition));
     }
 }
