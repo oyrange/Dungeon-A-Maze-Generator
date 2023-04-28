@@ -358,23 +358,6 @@ public class W {
     }
 
     /**
-     * Generate random position between width and height bounds.
-     *
-     * @param widthMin lower x bound
-     * @param widthMax upper x bound
-     * @param heightMin lower y bound
-     * @param heightMax upper y bound
-     *
-     * @return Position(x, y)
-     */
-    private Position randomPosition(int widthMin, int widthMax, int heightMin, int heightMax) {
-        int x = RANDOM.nextInt(widthMin, widthMax);
-        int y = RANDOM.nextInt(heightMin, heightMax);
-
-        return new Position(x, y);
-    }
-
-    /**
      * Set position to tile.
      * @param pos position
      * @param tile TETile to assign into MAP
