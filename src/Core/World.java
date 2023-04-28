@@ -1,7 +1,6 @@
 package Core;
 
 import TileEngine.TETile;
-import TileEngine.TETile;
 import TileEngine.Tileset;
 import TileEngine.dungeonTile;
 
@@ -265,7 +264,7 @@ public class World {
             int height = RANDOM.nextInt(height_min, height_max);
             Room r = new Room(pos, width, height);
 
-            for (Position bound : r.bounds()) {             // how to condense init room and check bounds?
+            for (Position bound : r.area()) {             // how to condense init room and check bounds?
                 if (bound.getX() < 0 || bound.getX() >= WIDTH ||
                 //if (bound.getX() < 0 || bound.getX() >= marginWIDTH ||
                         //bound.getY() < 0 || bound.getY() >= marginHEIGHT ||
@@ -278,7 +277,7 @@ public class World {
 
             if (!overlap) {
                 rooms.add(r);
-                for (Position floor : r.bounds()) {
+                for (Position floor : r.area()) {
                     setTile(floor, FLOOR);
                 }
                 for (Position upper : r.topWalls()) {
@@ -321,7 +320,7 @@ public class World {
     private void drawRooms(List<Room> rooms) {
         for (Room room : rooms) {
 
-            for (Position floor : room.bounds()) {
+            for (Position floor : room.area()) {
                 //if (!ROOMTiles.contains(currentTile(floor))) {
                     setTile(floor, FLOOR);
                 //}
@@ -471,7 +470,7 @@ public class World {
         }
 
         for (Room hallway : hallways) {
-            for (Position floor : hallway.bounds()) {
+            for (Position floor : hallway.area()) {
                 //if (!ROOMTiles.contains(currentTile(floor))) {
                     setTile(floor, FLOOR);
                 //}
@@ -594,7 +593,7 @@ public class World {
 
     private Position getRandomFloor(Random random, List<Room> rooms) {
         Room randomRoom = rooms.get(random.nextInt(rooms.size()));
-        List<Position> floor = randomRoom.bounds();
+        List<Position> floor = randomRoom.area();
         Position randomFloor = floor.get(random.nextInt(floor.size()));
         return randomFloor;
     }

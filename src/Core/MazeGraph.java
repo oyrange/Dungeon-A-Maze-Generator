@@ -5,7 +5,7 @@ import java.util.*;
 public class MazeGraph {
 
     /**
-     * HyponymsGraph modelled after geeksforgeeks.org generic graph class.
+     * Creates a maze using random DFS gen.
      */
     private Map<Integer, List<Integer>> MAP;
     private int VERTEX_COUNT;

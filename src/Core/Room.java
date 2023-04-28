@@ -4,23 +4,23 @@ import java.util.Random;
 import java.util.*;
 
 public class Room {
-    private Position P; // a room's position is its bottom left corner
+    private Position STARTING_POSITION; // a room's position is its bottom left corner
     private int WIDTH;
     private int HEIGHT;
 
-    private List<Position> FLOOR = new ArrayList<>();
-    private List<Position> ALL_WALLS = new ArrayList<>();
-    private List<Position> CORNER_WALLS = new ArrayList<>();
-    private List<Position> RIGHT_WALLS = new ArrayList<>();
-    private List<Position> LEFT_WALLS = new ArrayList<>();
-    private List<Position> TOP_WALLS = new ArrayList<>();
-    private List<Position> BOTTOM_WALLS = new ArrayList<>();
+    private final List<Position> FLOOR = new ArrayList<>();
+    private final List<Position> BOUNDS = new ArrayList<>();
+    private final List<Position> CORNER_WALLS = new ArrayList<>();
+    private final List<Position> RIGHT_WALLS = new ArrayList<>();
+    private final List<Position> LEFT_WALLS = new ArrayList<>();
+    private final List<Position> TOP_WALLS = new ArrayList<>();
+    private final List<Position> BOTTOM_WALLS = new ArrayList<>();
 
     //
-    private final List<Position> BOUNDS = new ArrayList<>();
+    private final List<Position> AREA = new ArrayList<>();
 
     public Room(Position position, int w, int h) {
-        this.P = position;
+        this.STARTING_POSITION = position;
         this.WIDTH = w;
         this.HEIGHT = h;
 
@@ -32,43 +32,43 @@ public class Room {
 
     /////
     private void setWalls() {
-        for (int x = P.getX(); x <= P.getX() + WIDTH; x++) {
-            Position up = new Position(x, P.getY() + HEIGHT);
-            Position low = new Position(x, P.getY());
+        for (int x = STARTING_POSITION.getX(); x <= STARTING_POSITION.getX() + WIDTH; x++) {
+            Position up = new Position(x, STARTING_POSITION.getY() + HEIGHT);
+            Position low = new Position(x, STARTING_POSITION.getY());
 
             TOP_WALLS.add(up);
             BOTTOM_WALLS.add(low);
         }
 
-        for (int y = P.getY(); y <= P.getY() + HEIGHT; y++) {
-            Position right = new Position(P.getX() + WIDTH, y);
-            Position left = new Position(P.getX(), y);
+        for (int y = STARTING_POSITION.getY(); y <= STARTING_POSITION.getY() + HEIGHT; y++) {
+            Position right = new Position(STARTING_POSITION.getX() + WIDTH, y);
+            Position left = new Position(STARTING_POSITION.getX(), y);
 
             RIGHT_WALLS.add(right);
             LEFT_WALLS.add(left);
         }
-        ALL_WALLS.addAll(TOP_WALLS);
-        ALL_WALLS.addAll(BOTTOM_WALLS);
-        ALL_WALLS.addAll(RIGHT_WALLS);
-        ALL_WALLS.addAll(LEFT_WALLS);
+        BOUNDS.addAll(TOP_WALLS);
+        BOUNDS.addAll(BOTTOM_WALLS);
+        BOUNDS.addAll(RIGHT_WALLS);
+        BOUNDS.addAll(LEFT_WALLS);
 
-        CORNER_WALLS.add(new Position(P.getX(), P.getY()));
-        CORNER_WALLS.add(new Position(P.getX(), P.getY() + HEIGHT));
-        CORNER_WALLS.add(new Position(P.getX() + WIDTH, P.getY()));
-        CORNER_WALLS.add(new Position(P.getX() + WIDTH, P.getY() + HEIGHT));
+        CORNER_WALLS.add(new Position(STARTING_POSITION.getX(), STARTING_POSITION.getY()));
+        CORNER_WALLS.add(new Position(STARTING_POSITION.getX(), STARTING_POSITION.getY() + HEIGHT));
+        CORNER_WALLS.add(new Position(STARTING_POSITION.getX() + WIDTH, STARTING_POSITION.getY()));
+        CORNER_WALLS.add(new Position(STARTING_POSITION.getX() + WIDTH, STARTING_POSITION.getY() + HEIGHT));
     }
 
     private void setBounds() {
-        BOUNDS.addAll(P.twoDimensionalPositions(WIDTH, HEIGHT));
+        AREA.addAll(STARTING_POSITION.twoDimensionalPositions(WIDTH, HEIGHT));
     }
 
+
+    public List<Position> area() {
+        return AREA;
+    }
 
     public List<Position> bounds() {
         return BOUNDS;
-    }
-
-    public List<Position> walls() {
-        return ALL_WALLS;
     }
 
     public List<Position> cornerWalls() {
@@ -92,7 +92,7 @@ public class Room {
     }
 
     public Position position() {
-        return P;
+        return STARTING_POSITION;
     }
 
     public int width() {
@@ -104,18 +104,17 @@ public class Room {
     }
 
     public boolean containsPosition(Position position) {
-        if (BOUNDS.contains(position)) return true;
-        return false;
+        return AREA.contains(position);
     }
 
     public Position randomPosition() {
         Random random = new Random();
-        return BOUNDS.get(random.nextInt(BOUNDS.size()));
+        return AREA.get(random.nextInt(AREA.size()));
     }
 
     public boolean overlap(Room otherRoom) {
-        for (Position bound : otherRoom.bounds()) {
-            if (BOUNDS.contains(bound)) {
+        for (Position bound : otherRoom.area()) {
+            if (AREA.contains(bound)) {
                 return true;
             }
         }
@@ -123,6 +122,6 @@ public class Room {
     }
 
     public boolean totalOverlap(Room otherRoom) {
-        return new HashSet<>(BOUNDS).containsAll(otherRoom.BOUNDS);
+        return new HashSet<>(AREA).containsAll(otherRoom.AREA);
     }
 }

@@ -143,9 +143,6 @@ public class W {
      * @var attempts limits amount of attempted room generation.
      */
 
-    /* TODO: inefficient and repetitive check for room.bounds() etc.
-     *       Can take too long to generate all floor bounds then
-     *       discard and try again, attempts x. */
     private void generateRooms() {
         // could also set limit on successfully created rooms
 
@@ -157,8 +154,7 @@ public class W {
             int height = RANDOM.nextInt(height_min, height_max);
             Room newRoom = new Room(pos, width, height);
 
-
-            for (Position bound : MAP_ROOM.walls()) {
+            for (Position bound : MAP_ROOM.bounds()) {
                 if (newRoom.containsPosition(bound)) {
                     overlap = true;
                     break;
@@ -173,12 +169,10 @@ public class W {
 
             if (!overlap) {
                 ROOMS.add(newRoom);
-                //ROOM_BOUNDS.addAll(r.bounds());             // can I delete ROOM_BOUNDS?
-                for (Position floor : newRoom.bounds()) {
-                    //ROOMS.add(floor);
+                for (Position floor : newRoom.area()) {
                     setTile(floor, roomFLOOR);
                 }
-                for (Position bound : newRoom.walls()) {
+                for (Position bound : newRoom.bounds()) {
                     setTile(bound, roomWALL);
                 }
                 for (Position corner : newRoom.cornerWalls()) {
@@ -289,7 +283,7 @@ public class W {
         for (Room room : ROOMS) {
             List<Position> c = new ArrayList<>();
             List<Position> r = new ArrayList<>();
-            for (Position bound : room.bounds()) {
+            for (Position bound : room.area()) {
                 for (TETile p : adjacentTiles(bound, 1)) {
                     if (debugPATHTiles.contains(p) && !currentTile(bound).equals(roomCORNER)) {
                         c.add(bound);
