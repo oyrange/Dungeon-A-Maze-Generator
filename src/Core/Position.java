@@ -41,4 +41,12 @@ public class Position {
         }
         return otherPosition.x == x && otherPosition.y == y;
     }
+
+    public boolean xCoordinateIsEven() {
+        return x % 2 == 0;
+    }
+
+    public boolean yCoordinateIsEven() {
+        return y % 2 == 0;
+    }
 }

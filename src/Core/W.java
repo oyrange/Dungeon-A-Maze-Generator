@@ -14,13 +14,6 @@ public class W {
 
     private static final int EDGE = 1;
 
-    /** ROOM rules */
-    private final int attempts = 100;
-    private final int width_min = 4;
-    private final int width_max = 9;
-    private final int height_min = 4;
-    private final int height_max = 9;
-
 
     /** Debug tiles. */
     public static final List<TETile> debugROOMTiles = new ArrayList<>();
@@ -45,6 +38,7 @@ public class W {
     private Random RANDOM = new Random();
     private MazeGraph EMPTY;
 
+    /** Room and Path collections. */
     private final List<Room> ROOMS = new ArrayList<>();
     private final Set<Position> PATHS = new HashSet<>();
 
@@ -84,10 +78,10 @@ public class W {
 
         MAP_ARR = new TETile[WIDTH][HEIGHT];
 
-        TETile[] room = new TETile[] {roomFLOOR, roomWALL, roomCORNER};
-        TETile[] path = new TETile[] {pathFLOOR, pathWALL};
-        debugROOMTiles.addAll(Arrays.asList(room));
-        debugPATHTiles.addAll(Arrays.asList(path));
+        TETile[] roomTiles = new TETile[] {roomFLOOR, roomWALL, roomCORNER};
+        TETile[] pathTiles = new TETile[] {pathFLOOR, pathWALL};
+        debugROOMTiles.addAll(Arrays.asList(roomTiles));
+        debugPATHTiles.addAll(Arrays.asList(pathTiles));
 
         buildFromSeed(seed);
     }
@@ -106,7 +100,7 @@ public class W {
 
         fillWorld();
         generateRooms();
-        //generatePaths();
+        generatePaths();
         //openConnectors();
         //removeDeadEnds();removeDeadEnds();removeDeadEnds();
 
@@ -146,9 +140,15 @@ public class W {
     private void generateRooms() {
         // could also set limit on successfully created rooms
 
+        // room gen rules:
+        int attempts = 100;
+        int width_min = 4;
+        int width_max = 9;
+        int height_min = 4;
+        int height_max = 9;
+
         for (int i = 0; i < attempts; i++) {
             boolean overlap = false;
-
             Position pos = MAP_ROOM.randomPosition();
             int width = RANDOM.nextInt(width_min, width_max);
             int height = RANDOM.nextInt(height_min, height_max);
@@ -160,13 +160,11 @@ public class W {
                     break;
                 }
             }
-
             for (Room room : ROOMS) {
                 if (room.overlap(newRoom)) {
                     overlap = true;
                 }
             }
-
             if (!overlap) {
                 ROOMS.add(newRoom);
                 for (Position floor : newRoom.area()) {
@@ -187,13 +185,17 @@ public class W {
      * Traverse EMPTY MazeGraph to generate random pathways.
      * @var start generates random non-room position.
      */
+    // use for debugging without generateRooms() on:
+//        Position start = MAP_ROOM.randomPosition();
+//        while (debugROOMTiles.contains(currentTile(start)) ||
+//                !(start.getX() % 2 == 0 && start.getY() % 2 == 0)){
+//            start = MAP_ROOM.randomPosition();
+//        }
     private void generatePaths() {
-        addEdges();
 
-        Position start = MAP_ROOM.randomPosition();
-        //Position start = randomPosition(MARGIN, marginWIDTH, MARGIN, marginHEIGHT);    // TODO: optional, this causes diff output w roomgen() on vs off
-        while (debugROOMTiles.contains(currentTile(start)) ||
-                !(start.getX() % 2 == 0 && start.getY() % 2 == 0)){
+        addEdges();
+        Position start = ROOMS.get(RANDOM.nextInt(ROOMS.size())).randomPosition();
+        while (!(start.getX() % 2 == 0 && start.getY() % 2 == 0)){
             start = MAP_ROOM.randomPosition();
         }
 

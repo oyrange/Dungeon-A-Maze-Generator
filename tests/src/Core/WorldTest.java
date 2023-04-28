@@ -86,4 +86,22 @@ public class WorldTest {
 
         assertFalse(room1.overlap(room2));
     }
+
+    @Test
+    public void positionShouldKnowIfAtOddXCoordinate() {
+        Position oddPosition = new Position(1, 1);
+        Position evenPosition = new Position(2, 2);
+
+        assertFalse(oddPosition.xCoordinateIsEven());
+        assertTrue(evenPosition.xCoordinateIsEven());
+    }
+
+    @Test
+    public void positionShouldKnowIfAtOddYCoordinate() {
+        Position oddPosition = new Position(1, 1);
+        Position evenPosition = new Position(2, 2);
+
+        assertFalse(oddPosition.yCoordinateIsEven());
+        assertTrue(evenPosition.yCoordinateIsEven());
+    }
 }
