@@ -81,4 +81,12 @@ public class Position {
 
         return positions;
     }
+
+
+    public boolean adjacentTo(Position position2) {
+        if (adjacentVerticalPositions(1).contains(position2)) {
+            return true;
+        }
+        return adjacentHorizontalPositions(1).contains(position2);
+    }
 }

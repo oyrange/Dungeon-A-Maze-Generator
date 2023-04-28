@@ -124,4 +124,13 @@ public class Room {
     public boolean totalOverlap(Room otherRoom) {
         return new HashSet<>(AREA).containsAll(otherRoom.AREA);
     }
+
+    public boolean adjacentToRoom(Room otherRoom) {
+        for (Position position : BOUNDS) {
+            for (Position otherPosition : otherRoom.BOUNDS) {
+                if (position.adjacentTo(otherPosition)) return true;
+            }
+        }
+        return false;
+    }
 }

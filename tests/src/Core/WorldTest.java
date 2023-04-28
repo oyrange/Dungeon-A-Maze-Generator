@@ -154,4 +154,23 @@ public class WorldTest {
         assertTrue(adjacentPositionsList.contains(leftPosition));
         assertTrue(adjacentPositionsList.contains(rightPosition));
     }
+
+    @Test
+    public void roomShouldKnowIfTouchingAnotherRoom() {
+        Position position1 = new Position(1,1);
+        Room room1 = new Room(position1, 5,5);
+
+        Position position2 = new Position(6,6);
+        Room room2 = new Room(position1, 5,5);
+
+        assertTrue(room1.adjacentToRoom(room2));
+    }
+
+    @Test
+    public void positionShouldKnowIfAdjacentToAnother() {
+        Position position1 = new Position(1,1);
+        Position position2 = new Position(2, 1);
+
+        assertTrue(position1.adjacentTo(position2));
+    }
 }
