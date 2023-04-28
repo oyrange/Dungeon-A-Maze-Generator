@@ -35,19 +35,17 @@ public class W {
     /** Constructor variables. */
     private final int WIDTH;
     private final int HEIGHT;
-    private final TETile[][] MAP;
+    private final TETile[][] MAP_ARR;
+    private final Room MAP_ROOM;
     private static final int MARGIN = 4;   // border between canvas and room generation
 
     /** Seed variables. */
-    private int marginWIDTH;
-    private int marginHEIGHT;
+    private final int marginWIDTH;       // TODO: refactor addEdges() and remove marginW and marginH
+    private final int marginHEIGHT;
     private Random RANDOM = new Random();
     private MazeGraph EMPTY;
 
-    //private WeightedQuickUnionUF WQU;
-    private final Set<Position> ROOM_BOUNDS = new HashSet<>();
     private final List<Room> ROOMS = new ArrayList<>();
-    //private final Map<Room, List<Position>> ROOMS = new TreeMap<>();
     private final Set<Position> PATHS = new HashSet<>();
 
 
@@ -80,7 +78,11 @@ public class W {
 
         WIDTH = w;
         HEIGHT = h;
-        MAP = new TETile[WIDTH][HEIGHT];
+        marginWIDTH = WIDTH - MARGIN - EDGE;
+        marginHEIGHT = HEIGHT - MARGIN - EDGE;
+        MAP_ROOM = new Room(new Position(MARGIN, MARGIN), marginWIDTH - MARGIN, marginHEIGHT - MARGIN);
+
+        MAP_ARR = new TETile[WIDTH][HEIGHT];
 
         TETile[] room = new TETile[] {roomFLOOR, roomWALL, roomCORNER};
         TETile[] path = new TETile[] {pathFLOOR, pathWALL};
@@ -94,14 +96,12 @@ public class W {
      * Return MAP.
      */
     public TETile[][] map() {
-        return MAP;
+        return MAP_ARR;
     }
 
     private void buildFromSeed(long seed) {
-        marginWIDTH = WIDTH - MARGIN - EDGE;
-        marginHEIGHT = HEIGHT - MARGIN - EDGE;
         RANDOM = new Random(seed);
-        EMPTY = new MazeGraph(RANDOM, MARGIN, marginWIDTH, marginHEIGHT, WIDTH, HEIGHT);   // TODO: check for remnant crossovers btw W and MazeGraph, tidy code
+        EMPTY = new MazeGraph(RANDOM, WIDTH, HEIGHT);   // TODO: check for remnant crossovers btw W and MazeGraph, tidy code
         //WQU = new WeightedQuickUnionUF(WIDTH * HEIGHT);
 
         fillWorld();
@@ -130,7 +130,7 @@ public class W {
     private void fillWorld() {
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
-                MAP[x][y] = BASETILE;
+                MAP_ARR[x][y] = BASETILE;
             }
         }
     }
@@ -147,70 +147,47 @@ public class W {
      *       Can take too long to generate all floor bounds then
      *       discard and try again, attempts x. */
     private void generateRooms() {
-
         // could also set limit on successfully created rooms
-
-        List<Position> bounds = calculateBounds();
 
         for (int i = 0; i < attempts; i++) {
             boolean overlap = false;
 
-            Position pos = randomPosition(MARGIN, marginWIDTH, MARGIN, marginHEIGHT);
+            Position pos = MAP_ROOM.randomPosition();
             int width = RANDOM.nextInt(width_min, width_max);
             int height = RANDOM.nextInt(height_min, height_max);
-            Room room = new Room(pos, width, height);
+            Room newRoom = new Room(pos, width, height);
 
-//            for (Position bound : bounds) {
-//                if (room.containsPosition(bound) || !currentTile(bound).equals(BASETILE)) {
-//                    overlap = true;
-//                    break;
-//                }
-//            }
 
-            for (Position bound : room.bounds()) {             // how to condense init room and check bounds?
-                if (bound.getX() < 0 || bound.getX() >= marginWIDTH ||
-                        bound.getY() < 0 || bound.getY() >= marginHEIGHT ||
-                        (debugROOMTiles.contains(currentTile(bound)))) {
-                    overlap = true;                         // get rid of break; continue; ?
+            for (Position bound : MAP_ROOM.walls()) {
+                if (newRoom.containsPosition(bound)) {
+                    overlap = true;
                     break;
                 }
             }
 
+            for (Room room : ROOMS) {
+                if (room.overlap(newRoom)) {
+                    overlap = true;
+                }
+            }
+
             if (!overlap) {
-                ROOMS.add(room);
+                ROOMS.add(newRoom);
                 //ROOM_BOUNDS.addAll(r.bounds());             // can I delete ROOM_BOUNDS?
-                for (Position floor : room.bounds()) {
+                for (Position floor : newRoom.bounds()) {
                     //ROOMS.add(floor);
                     setTile(floor, roomFLOOR);
                 }
-                for (Position bound : room.walls()) {
+                for (Position bound : newRoom.walls()) {
                     setTile(bound, roomWALL);
                 }
-                for (Position corner : room.cornerWalls()) {
+                for (Position corner : newRoom.cornerWalls()) {
                     setTile(corner, roomCORNER);
                 }
             }
         }
     }
 
-    private List<Position> calculateBounds() {
-        List<Position> bounds = new ArrayList<>();
-        for (int x = MARGIN; x < marginWIDTH; x++) {
-            Position upper = new Position(x, marginHEIGHT);
-            Position lower = new Position(x, MARGIN);
-
-            bounds.add(upper);
-            bounds.add(lower);
-        }
-        for (int y = MARGIN; y < marginHEIGHT; y++) {
-            Position right = new Position(marginWIDTH, y);
-            Position left = new Position(MARGIN, y);
-
-            bounds.add(right);
-            bounds.add(left);
-        }
-        return bounds;
-    }
 
     /**
      * Traverse EMPTY MazeGraph to generate random pathways.
@@ -219,10 +196,11 @@ public class W {
     private void generatePaths() {
         addEdges();
 
-        Position start = randomPosition(MARGIN, marginWIDTH, MARGIN, marginHEIGHT);    // TODO: optional, this causes diff output w roomgen() on vs off
+        Position start = MAP_ROOM.randomPosition();
+        //Position start = randomPosition(MARGIN, marginWIDTH, MARGIN, marginHEIGHT);    // TODO: optional, this causes diff output w roomgen() on vs off
         while (debugROOMTiles.contains(currentTile(start)) ||
                 !(start.getX() % 2 == 0 && start.getY() % 2 == 0)){
-            start = randomPosition(MARGIN, marginWIDTH, MARGIN, marginHEIGHT);
+            start = MAP_ROOM.randomPosition();
         }
 
         List<Position> path = EMPTY.traverse(start);
@@ -371,7 +349,7 @@ public class W {
     }
 
     private TETile currentTile(Position pos) {
-        return MAP[pos.getX()][pos.getY()];
+        return MAP_ARR[pos.getX()][pos.getY()];
     }
 
     private List<TETile> adjacentTiles(Position pos, int distance) {        // TODO: optional, a more efficient way to write this
@@ -451,7 +429,7 @@ public class W {
      * @param tile TETile to assign into MAP
      */
     private void setTile(Position pos, TETile tile) {
-        MAP[pos.getX()][pos.getY()] = tile;
+        MAP_ARR[pos.getX()][pos.getY()] = tile;
     }
 
 

@@ -12,18 +12,12 @@ public class MazeGraph {
     private List<Integer> VERTICES = new ArrayList<>();
     private Random RANDOM;
     private int EDGES;
-    private int marginWIDTH;
-    private int marginHEIGHT;
-    //private int MARGIN;
     private int WIDTH;
     private int HEIGHT;
 
-    public MazeGraph(Random random, int margin, int mw, int mh, int width, int height) {
+    public MazeGraph(Random random, int width, int height) {
         MAP = new HashMap<>();
 
-        //MARGIN = margin;
-        //marginWIDTH = mw;
-        //marginHEIGHT = mh;
         WIDTH = width;
         HEIGHT = height;
         RANDOM = random;

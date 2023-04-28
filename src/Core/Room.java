@@ -113,12 +113,16 @@ public class Room {
         return BOUNDS.get(random.nextInt(BOUNDS.size()));
     }
 
-    public boolean overlap(Room room2) {
-        for (Position bound : room2.bounds()) {
+    public boolean overlap(Room otherRoom) {
+        for (Position bound : otherRoom.bounds()) {
             if (BOUNDS.contains(bound)) {
                 return true;
             }
         }
         return false;
+    }
+
+    public boolean totalOverlap(Room otherRoom) {
+        return new HashSet<>(BOUNDS).containsAll(otherRoom.BOUNDS);
     }
 }
