@@ -49,4 +49,12 @@ public class Position {
     public boolean yCoordinateIsEven() {
         return y % 2 == 0;
     }
+
+    public boolean xCoordinateLargerThan(Position otherPosition) {
+        return x > otherPosition.x;
+    }
+
+    public boolean yCoordinateLargerThan(Position otherPosition) {
+        return y > otherPosition.y;
+    }
 }

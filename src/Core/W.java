@@ -192,10 +192,9 @@ public class W {
 //            start = MAP_ROOM.randomPosition();
 //        }
     private void generatePaths() {
-
         addEdges();
         Position start = ROOMS.get(RANDOM.nextInt(ROOMS.size())).randomPosition();
-        while (!(start.getX() % 2 == 0 && start.getY() % 2 == 0)){
+        while (!(start.xCoordinateIsEven() && start.yCoordinateIsEven())){
             start = MAP_ROOM.randomPosition();
         }
 

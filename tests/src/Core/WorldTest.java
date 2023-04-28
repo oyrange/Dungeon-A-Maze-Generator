@@ -104,4 +104,20 @@ public class WorldTest {
         assertFalse(oddPosition.yCoordinateIsEven());
         assertTrue(evenPosition.yCoordinateIsEven());
     }
+
+    @Test
+    public void positionShouldKnowIfXCoordIsGreaterThanAnotherPositionXCoord() {
+        Position smallerPosition = new Position(1, 1);
+        Position largerPosition = new Position(2, 2);
+
+        assertFalse(smallerPosition.xCoordinateLargerThan(largerPosition));
+    }
+
+    @Test
+    public void positionShouldKnowIfYCoordIsGreaterThanAnotherPositionYCoord() {
+        Position smallerPosition = new Position(1, 1);
+        Position largerPosition = new Position(2, 2);
+
+        assertFalse(smallerPosition.yCoordinateLargerThan(largerPosition));
+    }
 }
