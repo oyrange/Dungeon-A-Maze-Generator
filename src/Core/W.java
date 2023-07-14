@@ -8,6 +8,10 @@ import static java.lang.Math.floorDiv;
 /*
  * TODO: verify WIDTH / HEIGHT must be odd
  *  TODO: delete ROOM_BOUNDS  ?
+ *
+ * TODO: wall generation in generatePaths()
+ *
+ * TODO: generatePaths() can sometimes leave a room unconnected
  */
 
 public class W {
@@ -29,13 +33,13 @@ public class W {
     private final int WIDTH;
     private final int HEIGHT;
     private final TETile[][] MAP_ARR;
-    private final Room MAP_ROOM;
+    private final Room MAP;
     private static final int MARGIN = 4;   // border between canvas and room generation
 
     /** Seed variables. */
     private final int marginWIDTH;       // TODO: refactor addEdges() and remove marginW and marginH
     private final int marginHEIGHT;
-    private Random RANDOM = new Random();
+    private Random RANDOM;
     private MazeGraph EMPTY;
 
     /** Room and Path collections. */
@@ -74,7 +78,7 @@ public class W {
         HEIGHT = h;
         marginWIDTH = WIDTH - MARGIN - EDGE;
         marginHEIGHT = HEIGHT - MARGIN - EDGE;
-        MAP_ROOM = new Room(new Position(MARGIN, MARGIN), marginWIDTH - MARGIN, marginHEIGHT - MARGIN);
+        MAP = new Room(new Position(MARGIN, MARGIN), marginWIDTH - MARGIN, marginHEIGHT - MARGIN);
 
         MAP_ARR = new TETile[WIDTH][HEIGHT];
 
@@ -143,13 +147,15 @@ public class W {
         int height_max = 9;
 
         for (int i = 0; i < attempts; i++) {
+            // TODO: remove getters and setters used in Room.java
+
             boolean overlap = false;
-            Position pos = MAP_ROOM.randomPosition();
+            Position pos = MAP.randomPosition(RANDOM);
             int width = RANDOM.nextInt(width_min, width_max);
             int height = RANDOM.nextInt(height_min, height_max);
             Room newRoom = new Room(pos, width, height);
 
-            for (Position bound : MAP_ROOM.bounds()) {
+            for (Position bound : MAP.bounds()) {
                 if (newRoom.containsPosition(bound)) {
                     overlap = true;
                     break;
@@ -182,18 +188,11 @@ public class W {
      */
     private void generatePaths() {
         addEdges();
-
-        // use for debugging without generateRooms() on:
-        Position start = MAP_ROOM.randomPosition();
-        while (debugROOMTiles.contains(currentTile(start)) ||
+        Position start = MAP.randomPosition(RANDOM);
+        while (debugROOMTiles.contains(currentTile(start)) || //TODO: ewww change this line from checking debugROOMTiles
                 !(start.xCoordinateIsEven() && start.yCoordinateIsEven())) {
-            start = MAP_ROOM.randomPosition();
+            start = MAP.randomPosition(RANDOM);
         }
-
-//        Position start = ROOMS.get(RANDOM.nextInt(ROOMS.size())).randomPosition();
-//        while (!(start.xCoordinateIsEven() && start.yCoordinateIsEven())){
-//            start = MAP_ROOM.randomPosition();
-//        }
 
         List<Position> path = EMPTY.traverse(start);
         for (int i = 0; i < path.size() - 1; i++) {
@@ -203,7 +202,6 @@ public class W {
 
             int x = tile.getX();
             int y = tile.getY();
-            boolean vertical = false;
 
 //            if (tile.rightPosition().equals(next)) x++;
 //            else if (tile.leftPosition().equals(next)) x--;
@@ -216,18 +214,14 @@ public class W {
 //                vertical = true;
 //            }
 
-            if (tile.getX() < next.getX()) {         // path goes right
+            if (next.xCoordinateLargerThan(tile)) {         // path goes right
                 x++;
-                //vertical = false;
-            } else if (tile.getX() > next.getX()) {  // path goes left
+            } else if (tile.xCoordinateLargerThan(next)) {  // path goes left
                 x--;
-                //vertical = false;
-            } else if (tile.getY() < next.getY()) {  // path goes up
+            } else if (next.yCoordinateLargerThan(tile)) {  // path goes up
                 y++;
-                vertical = true;
-            } else if (tile.getY() > next.getY()) {  // path goes down
+            } else if (tile.yCoordinateLargerThan(next)) {  // path goes down
                 y--;
-                vertical = true;
             }
 
 //            x = (tile.getX() < next.getX()) ? x+1: x-1;
@@ -244,40 +238,10 @@ public class W {
             PATHS.add(tile);
             PATHS.add(between);
 
-            /* TODO: walls curr overwrite floor tiles due to loop */
+            /* TODO: draw walls */
 
-            /* draw walls
-            for (Position wall : adjacentPos(vertical, tile) ) {
-                if (MAP[wall.getX()][wall.getY()] == BASETILE) {
-
-                    setTile(wall, pathWALL);
-                }
-            }
-            for (Position wall : adjacentPos(vertical, btw)) {
-                if (MAP[wall.getX()][wall.getY()] == BASETILE) {
-
-                    setTile(wall, pathWALL);
-                }
-            }
-            //*/
         }
 
-        /*
-        for (Position tile : PATHS) {
-            List<Position> adj = adjacentPos(true, tile, 1);
-
-            if (Collections.frequency(adj, BASETILE) > 1) {
-
-                setTile(wall, pathWALL);
-            }
-        }
-        for (Position wall : adjacentPos(vertical, btw)) {
-            if (MAP[wall.getX()][wall.getY()] == BASETILE) {
-
-                setTile(wall, pathWALL);
-            }
-        }
-         */
     }
 
     private void openConnectors() {
@@ -378,7 +342,7 @@ public class W {
     }
 
 
-    public void addEdges() {
+    public void addEdges() {           // TODO: this code bulky as hell, + can it be moved to MazeGraph.java ?
         for (int x = MARGIN; x <= marginWIDTH; x += 2) {
             for (int y = MARGIN; y <= marginHEIGHT; y += 2) {
                 Position curr = new Position(x, y);
@@ -460,7 +424,7 @@ public class W {
         int height = 51;
         TERenderer ter = new TERenderer();
 
-        W world = new W(width, height, 1234);
+        W world = new W(width, height, 4444);
         TETile[][] map = world.map();
 
         ter.initialize(width, height);

@@ -3,6 +3,8 @@ package Core;
 import java.util.Random;
 import java.util.*;
 
+    // TODO: refactor area()-- getter and setter used in W.java generateRooms()
+
 public class Room {
     private Position STARTING_POSITION; // a room's position is its bottom left corner
     private int WIDTH;
@@ -26,12 +28,12 @@ public class Room {
 
         //TETile[] walls = new TETile[][] {RIGHT_WALLS, LEFT_WALLS, TOP_WALLS, BOTTOM_WALLS};
 
+        setArea();
         setBounds();
-        setWalls();
     }
 
     /////
-    private void setWalls() {
+    private void setBounds() {
         for (int x = STARTING_POSITION.getX(); x <= STARTING_POSITION.getX() + WIDTH; x++) {
             Position up = new Position(x, STARTING_POSITION.getY() + HEIGHT);
             Position low = new Position(x, STARTING_POSITION.getY());
@@ -58,7 +60,7 @@ public class Room {
         CORNER_WALLS.add(new Position(STARTING_POSITION.getX() + WIDTH, STARTING_POSITION.getY() + HEIGHT));
     }
 
-    private void setBounds() {
+    private void setArea() {
         AREA.addAll(STARTING_POSITION.twoDimensionalPositions(WIDTH, HEIGHT));
     }
 
@@ -107,8 +109,9 @@ public class Room {
         return AREA.contains(position);
     }
 
-    public Position randomPosition() {
-        Random random = new Random();
+    public Position randomPosition(Random random) { //TODO: random arg makes sure samecode world generates
+                                                    // same every time, but it's ugly
+        //Random random = new Random();
         return AREA.get(random.nextInt(AREA.size()));
     }
 

@@ -20,6 +20,9 @@ public class Position {
         return y;
     }
 
+    /**
+     * Understands (width, height) 2D array of positions starting from this. position.
+     */
     public List<Position> twoDimensionalPositions(int width, int height) {
         List<Position> positions = new ArrayList<>();
         for (int x = this.x; x <= this.x + width; x++) {
@@ -58,6 +61,9 @@ public class Position {
         return y > otherPosition.y;
     }
 
+
+    // TODO: concat adjacent methods into one ... DRY
+
     public List<Position> adjacentHorizontalPositions(int distance) {
         List<Position> positions = new ArrayList<>();
 
@@ -69,8 +75,6 @@ public class Position {
 
         return positions;
     }
-
-    // TODO: concat adjacent methods into one ... DRY
 
     public List<Position> adjacentVerticalPositions(int distance) {
         List<Position> positions = new ArrayList<>();
