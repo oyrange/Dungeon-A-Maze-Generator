@@ -200,34 +200,23 @@ public class W {
             Position next = path.get(i + 1);
             //PATHS.add(tile);
 
-            int x = tile.getX();
-            int y = tile.getY();
-
-//            if (tile.rightPosition().equals(next)) x++;
-//            else if (tile.leftPosition().equals(next)) x--;
-//            else if (tile.upperPosition().equals(next)) {
-//                y++;
-//                vertical = true;
-//            }
-//            else if (tile.lowerPosition().equals(next)) {
-//                y--;
-//                vertical = true;
-//            }
+            Position between = tile;
 
             if (next.xCoordinateLargerThan(tile)) {         // path goes right
-                x++;
+                between = tile.rightPosition();
             } else if (tile.xCoordinateLargerThan(next)) {  // path goes left
-                x--;
+                between = tile.leftPosition();
             } else if (next.yCoordinateLargerThan(tile)) {  // path goes up
-                y++;
+                between = tile.upperPosition();
             } else if (tile.yCoordinateLargerThan(next)) {  // path goes down
-                y--;
+                between = tile.lowerPosition();
             }
 
-//            x = (tile.getX() < next.getX()) ? x+1: x-1;
-//            y = (tile.getY() < next.getY()) ? y+1 : y-1;
+            // TODO: don't understand why this code doesn't work:
+//            x = (next.xCoordinateLargerThan(tile)) ? x+1: x-1;
+//            y = (next.yCoordinateLargerThan(tile)) ? y+1 : y-1;
 
-            Position between = new Position(x, y);
+            //Position between = new Position(x, y);
 
             if (!debugROOMTiles.contains(currentTile(tile))) {
                 setTile(tile, pathFLOOR);
