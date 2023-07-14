@@ -12,6 +12,8 @@ import static org.junit.Assert.*;
 
 public class WorldTest {
 
+    static Random RANDOM = new Random(4444);
+
     @Test
     public void aPositionShouldBeEqualToItself() {
         Position position = new Position(1, 1);
@@ -37,7 +39,7 @@ public class WorldTest {
     public void roomShouldContainBoundPositions() {
         Position position = new Position(1,1);
         Room room = new Room(position, 5, 5);
-        Position randomPosition = room.randomPosition();
+        Position randomPosition = room.randomPosition(RANDOM);
 
         assertTrue(room.containsPosition(randomPosition));
     }
@@ -50,7 +52,7 @@ public class WorldTest {
         Room room1 = new Room(position1, 5, 5);
         Room room2 = new Room(position2, 5, 5);
 
-        Position room1Position = room1.randomPosition();
+        Position room1Position = room1.randomPosition(RANDOM);
         assertFalse(room2.containsPosition(room1Position));
     }
 
@@ -124,7 +126,7 @@ public class WorldTest {
     public void roomShouldGenerateRandomPositionInsideItself() {
         Position position = new Position(1,1);
         Room room = new Room(position, 5,5);
-        Position randomPosition = room.randomPosition();
+        Position randomPosition = room.randomPosition(RANDOM);
 
         assertTrue(room.containsPosition(randomPosition));
     }

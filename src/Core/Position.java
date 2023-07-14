@@ -21,7 +21,7 @@ public class Position {
     }
 
     /**
-     * Understands (width, height) 2D array of positions starting from this. position.
+     * Understands (width, height) 2D array of positions starting from this.position.
      */
     public List<Position> twoDimensionalPositions(int width, int height) {
         List<Position> positions = new ArrayList<>();
