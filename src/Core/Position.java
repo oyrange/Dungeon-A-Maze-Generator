@@ -1,15 +1,19 @@
 package Core;
 
+import TileEngine.TETile;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Position {
     private int x;
     private int y;
+    private TETile tile;
 
     public Position(int x, int y) {
         this.x = x;
         this.y = y;
+        this.tile = null;
     }
 
     public int getX() {
@@ -110,5 +114,13 @@ public class Position {
 
     public Position upperPosition() {
         return new Position(x, y + 1);
+    }
+
+    public void assignTile(TETile tile) {
+        this.tile = tile;
+    }
+
+    public boolean hasTile() {
+        return (this.tile != null);
     }
 }

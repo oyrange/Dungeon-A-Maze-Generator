@@ -216,8 +216,6 @@ public class W {
 //            x = (next.xCoordinateLargerThan(tile)) ? x+1: x-1;
 //            y = (next.yCoordinateLargerThan(tile)) ? y+1 : y-1;
 
-            //Position between = new Position(x, y);
-
             if (!debugROOMTiles.contains(currentTile(tile))) {
                 setTile(tile, pathFLOOR);
             }                                                   // TODO: these if conditions removeable when maze gen around rooms

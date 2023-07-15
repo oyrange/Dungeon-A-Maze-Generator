@@ -3,6 +3,8 @@ package src.Core;
 import Core.MazeGraph;
 import Core.Position;
 import Core.Room;
+import TileEngine.TETile;
+import TileEngine.debugTile;
 import org.junit.Test;
 
 import java.util.List;
@@ -13,6 +15,7 @@ import static org.junit.Assert.*;
 public class WorldTest {
 
     static Random RANDOM = new Random(4444);
+    static TETile TILE = debugTile.BLACK;
 
     @Test
     public void aPositionShouldBeEqualToItself() {
@@ -194,5 +197,12 @@ public class WorldTest {
 
         assertTrue(centrePosition.lowerPosition().equals(lowerPosition));
         assertTrue(centrePosition.upperPosition().equals(upperPosition));
+    }
+
+    @Test
+    public void roomShouldBeAbleToSetTiles() {
+        Room newRoom = new Room(new Position(0, 0), 2, 2);
+        newRoom.setTiles(TILE, TILE, TILE);
+        assertTrue(newRoom.randomPosition(RANDOM).hasTile());
     }
 }

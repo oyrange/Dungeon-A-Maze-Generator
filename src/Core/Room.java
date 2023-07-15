@@ -1,5 +1,7 @@
 package Core;
 
+import TileEngine.TETile;
+
 import java.util.Random;
 import java.util.*;
 
@@ -64,7 +66,7 @@ public class Room {
         AREA.addAll(STARTING_POSITION.twoDimensionalPositions(WIDTH, HEIGHT));
     }
 
-
+    // TODO: remove area()
     public List<Position> area() {
         return AREA;
     }
@@ -135,5 +137,17 @@ public class Room {
             }
         }
         return false;
+    }
+
+    public void setTiles(TETile floorTile, TETile wallTile, TETile cornerTile) {
+        for (Position floor : AREA) {
+            floor.assignTile(floorTile);
+        }
+        for (Position wall : BOUNDS) {
+            wall.assignTile(wallTile);
+        }
+        for (Position corner : CORNER_WALLS) {
+            corner.assignTile(cornerTile);
+        }
     }
 }
