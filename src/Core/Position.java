@@ -121,6 +121,11 @@ public class Position {
         map[this.x][this.y] = tile;
     }
 
+    //TODO: please for the love of god delete this when you have a better solution in W.generatePaths().
+    public TETile getTile() {
+        return tile;
+    }
+
     // TODO: remove when no longer needed for WorldTest.roomShouldBeAbleToSetTiles().
     public boolean hasTile() {
         return (this.tile != null);
