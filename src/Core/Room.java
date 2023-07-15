@@ -139,15 +139,15 @@ public class Room {
         return false;
     }
 
-    public void setTiles(TETile floorTile, TETile wallTile, TETile cornerTile) {
+    public void setTiles(TETile[][] map, TETile floorTile, TETile wallTile, TETile cornerTile) {
         for (Position floor : AREA) {
-            floor.assignTile(floorTile);
+            floor.setTile(map, floorTile);
         }
         for (Position wall : BOUNDS) {
-            wall.assignTile(wallTile);
+            wall.setTile(map, wallTile);
         }
         for (Position corner : CORNER_WALLS) {
-            corner.assignTile(cornerTile);
+            corner.setTile(map, cornerTile);
         }
     }
 }

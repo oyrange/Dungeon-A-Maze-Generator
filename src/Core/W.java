@@ -166,17 +166,12 @@ public class W {
                     overlap = true;
                 }
             }
+
+            // TODO: ASAP use Room.setTiles() instead of Room.area()
+
             if (!overlap) {
                 ROOMS.add(newRoom);
-                for (Position floor : newRoom.area()) {
-                    setTile(floor, roomFLOOR);
-                }
-                for (Position bound : newRoom.bounds()) {
-                    setTile(bound, roomWALL);
-                }
-                for (Position corner : newRoom.cornerWalls()) {
-                    setTile(corner, roomCORNER);
-                }
+                newRoom.setTiles(MAP_ARR, roomFLOOR, roomWALL, roomCORNER);
             }
         }
     }

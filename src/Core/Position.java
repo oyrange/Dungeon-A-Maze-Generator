@@ -116,10 +116,12 @@ public class Position {
         return new Position(x, y + 1);
     }
 
-    public void assignTile(TETile tile) {
+    public void setTile(TETile[][] map, TETile tile) {
         this.tile = tile;
+        map[this.x][this.y] = tile;
     }
 
+    // TODO: remove when no longer needed for WorldTest.roomShouldBeAbleToSetTiles().
     public boolean hasTile() {
         return (this.tile != null);
     }

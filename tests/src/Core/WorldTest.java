@@ -16,6 +16,7 @@ public class WorldTest {
 
     static Random RANDOM = new Random(4444);
     static TETile TILE = debugTile.BLACK;
+    static TETile[][] MAP = new TETile[10][10];
 
     @Test
     public void aPositionShouldBeEqualToItself() {
@@ -202,7 +203,17 @@ public class WorldTest {
     @Test
     public void roomShouldBeAbleToSetTiles() {
         Room newRoom = new Room(new Position(0, 0), 2, 2);
-        newRoom.setTiles(TILE, TILE, TILE);
+        newRoom.setTiles(MAP, TILE, TILE, TILE);
         assertTrue(newRoom.randomPosition(RANDOM).hasTile());
+    }
+
+    @Test
+    public void positionShouldBeAbleToModify2DArray() {
+        Position position = new Position(1, 1);
+        position.setTile(MAP, debugTile.BLACK);
+
+        assertTrue(MAP[1][1].equals(debugTile.BLACK));
+
+        position.setTile(MAP, null);  // reset
     }
 }
