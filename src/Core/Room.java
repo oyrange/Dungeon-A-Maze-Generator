@@ -7,6 +7,12 @@ import java.util.*;
 
     // TODO: refactor area()-- getter and setter used in W.java generateRooms()
 
+    //TODO: remove width(), height() getters and setters.
+
+/**
+ * Understands the bounds of a Room.
+ */
+
 public class Room {
     private Position STARTING_POSITION; // a room's position is its bottom left corner
     private int WIDTH;

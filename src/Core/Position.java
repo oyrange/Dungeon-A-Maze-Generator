@@ -6,6 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Position {
+
+    /**
+     * Understands the coordinates of a Position.
+     */
+
+    // TODO: delete Position.(getX(),getY()). It's tangled in so much messy code.
+
     private int x;
     private int y;
     private TETile tile;

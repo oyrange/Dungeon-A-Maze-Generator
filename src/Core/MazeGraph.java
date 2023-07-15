@@ -6,6 +6,7 @@ public class MazeGraph {
 
     /**
      * Creates a maze using random DFS gen.
+     * Understands a maze.
      */
     private Map<Integer, List<Integer>> MAP;
     private int VERTEX_COUNT;
