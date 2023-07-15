@@ -16,10 +16,16 @@ public class Position {
         this.tile = null;
     }
 
+    /**
+     * @return x coordinate -- needs to be deleted.
+     */
     public int getX() {
         return x;
     }
 
+    /**
+     * @return y coordinate -- needs to be deleted.
+     */
     public int getY() {
         return y;
     }
