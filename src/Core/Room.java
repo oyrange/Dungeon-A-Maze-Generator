@@ -156,4 +156,12 @@ public class Room {
             corner.setTile(map, cornerTile);
         }
     }
+
+    public Position selectOneInternalPosition(Random random, List<Position> connectors) {
+        Position position = connectors.remove(random.nextInt(connectors.size()));
+        while (!(this.containsPosition(position))) {
+            position = connectors.remove(random.nextInt(connectors.size()));
+        }
+        return position;
+    }
 }

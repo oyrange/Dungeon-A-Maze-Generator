@@ -12,6 +12,12 @@ import static java.lang.Math.floorDiv;
  * TODO: wall generation in generatePaths()
  *
  * TODO: generatePaths() can sometimes leave a room unconnected
+ *
+ * TODO: delete Position.(getX(),getY()). It's tangled in so much messy code.
+ */
+
+/**
+ * Understands what tiles are where in a World.
  */
 
 public class W {
@@ -147,8 +153,6 @@ public class W {
         int height_max = 9;
 
         for (int i = 0; i < attempts; i++) {
-            // TODO: remove getters and setters used in Room.java
-
             boolean overlap = false;
             Position pos = MAP.randomPosition(RANDOM);
             int width = RANDOM.nextInt(width_min, width_max);
@@ -166,9 +170,6 @@ public class W {
                     overlap = true;
                 }
             }
-
-            // TODO: ASAP use Room.setTiles() instead of Room.area()
-
             if (!overlap) {
                 ROOMS.add(newRoom);
                 newRoom.setTiles(MAP_ARR, roomFLOOR, roomWALL, roomCORNER);
@@ -190,11 +191,9 @@ public class W {
         }
 
         List<Position> path = EMPTY.traverse(start);
-        for (int i = 0; i < path.size() - 1; i++) {
-            Position tile = path.get(i);
-            Position next = path.get(i + 1);
-            //PATHS.add(tile);
-
+        for (int positionIndex = 0; positionIndex < path.size() - 1; positionIndex++) {
+            Position tile = path.get(positionIndex);
+            Position next = path.get(positionIndex + 1);
             Position between = tile;
 
             if (next.xCoordinateLargerThan(tile)) {         // path goes right
@@ -207,16 +206,9 @@ public class W {
                 between = tile.lowerPosition();
             }
 
-            // TODO: don't understand why this code doesn't work:
-//            x = (next.xCoordinateLargerThan(tile)) ? x+1: x-1;
-//            y = (next.yCoordinateLargerThan(tile)) ? y+1 : y-1;
+            tile.setTile(MAP_ARR, pathFLOOR);
+            between.setTile(MAP_ARR, pathFLOOR);
 
-            if (!debugROOMTiles.contains(currentTile(tile))) {
-                setTile(tile, pathFLOOR);
-            }                                                   // TODO: these if conditions removeable when maze gen around rooms
-            if (!debugROOMTiles.contains(currentTile(between))) {
-                setTile(between, pathFLOOR);
-            }
             PATHS.add(tile);
             PATHS.add(between);
 
@@ -227,8 +219,19 @@ public class W {
     }
 
     private void openConnectors() {
+
+        /*
+        pick room
+        pick bound
+        change bound tile
+
+        pick room
+        pick bound
+        ...
+         */
+
         for (Position c : findConnectors()) {
-            setTile(c, roomFLOOR);
+            c.setTile(MAP_ARR, roomFLOOR);
         }
     }
 
@@ -281,11 +284,10 @@ public class W {
     }
 
     private void removeDeadEnds() {
-
         for (Position tile : PATHS) {               /* TODO: optional, concat PATHS and ROOMS ? */
             List<TETile> adjacent = adjacentTiles(tile, 1);
             if (Collections.frequency(adjacent, BASETILE) > 2) {        /* TODO: this causes checkerboard effect */
-                setTile(tile, BASETILE);
+                tile.setTile(MAP_ARR, BASETILE);
                 //PATHS.remove(tile);
             }
         }
@@ -312,15 +314,6 @@ public class W {
             adjacent.add(currentTile(p));
         }
         return adjacent;
-    }
-
-    /**
-     * Set position to tile.
-     * @param pos position
-     * @param tile TETile to assign into MAP
-     */
-    private void setTile(Position pos, TETile tile) {
-        MAP_ARR[pos.getX()][pos.getY()] = tile;
     }
 
 

@@ -7,6 +7,7 @@ import TileEngine.TETile;
 import TileEngine.debugTile;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -214,6 +215,26 @@ public class WorldTest {
 
         assertTrue(MAP[1][1].equals(debugTile.BLACK));
 
-        position.setTile(MAP, null);  // reset
+        position.setTile(MAP, null);  // is reset necessary?
+    }
+
+    @Test
+    public void roomShouldBeAbleToChooseConnectorInsideItself() {
+        Room newRoom = new Room((new Position(0,0)), 2, 2);
+
+        Position internalPosition = newRoom.randomPosition(RANDOM);
+        Position otherExternalPosition = new Position(10,10);
+        Position anotherExternalPosition = new Position(20,20);
+        Position finalExternalPosition = new Position(30,30);
+
+        List<Position> allPositions = new ArrayList<>();
+        allPositions.add(internalPosition);
+        allPositions.add(otherExternalPosition);
+        allPositions.add(anotherExternalPosition);
+        allPositions.add(finalExternalPosition);
+
+        Position position = newRoom.selectOneInternalPosition(RANDOM, allPositions);
+
+        assertTrue(newRoom.containsPosition(position));
     }
 }
